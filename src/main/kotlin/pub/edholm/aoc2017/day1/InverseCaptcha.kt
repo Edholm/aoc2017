@@ -10,18 +10,21 @@ fun main(args: Array<String>) {
 class InverseCaptcha {
   fun solveCaptcha(input: String): Long {
     val inputs = input.convertToListOfLongs()
-    val initial = if (inputs.first() == inputs.last()) inputs.first() else 0L
+    val initial = if (inputs.firstAndLastAreEqual()) inputs.first() else 0L
 
     return inputs
       .zipWithNext()
-      .fold(initial, { total, next ->
-        when {
-          next.valuesAreEqual() -> total + next.first
-          else -> total
-        }
-      })
+      .filter { it.valuesAreEqual() }
+      .map { it.first }
+      .sum()
+      .plus(initial)
   }
 
+  fun solveCaptchaPartTwo(input: String): Long {
+    return 0
+  }
+
+  private fun <T> List<T>.firstAndLastAreEqual() = this.first() == this.last()
   private fun <T> Pair<T, T>.valuesAreEqual() = this.first == this.second
   private fun String.convertToListOfLongs() = this.trim().map { it.toString().toLong() }
 }
