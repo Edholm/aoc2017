@@ -7,10 +7,10 @@ class InverseCaptchaTest {
   @Test
   fun solveCaptcha() {
     val inverseCaptcha = InverseCaptcha()
-    assertThat(inverseCaptcha.solveCaptcha("1122")).isEqualTo(3L)
-    assertThat(inverseCaptcha.solveCaptcha("1111")).isEqualTo(4L)
-    assertThat(inverseCaptcha.solveCaptcha("1234")).isEqualTo(0L)
-    assertThat(inverseCaptcha.solveCaptcha("91212129")).isEqualTo(9L)
+    assertThat(inverseCaptcha.solveCaptchaPartOne("1122")).isEqualTo(3L)
+    assertThat(inverseCaptcha.solveCaptchaPartOne("1111")).isEqualTo(4L)
+    assertThat(inverseCaptcha.solveCaptchaPartOne("1234")).isEqualTo(0L)
+    assertThat(inverseCaptcha.solveCaptchaPartOne("91212129")).isEqualTo(9L)
   }
 
   @Test

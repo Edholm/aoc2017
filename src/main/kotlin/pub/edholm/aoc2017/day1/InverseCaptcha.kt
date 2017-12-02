@@ -4,24 +4,43 @@ import pub.edholm.aoc2017.utils.getInputForDay
 
 fun main(args: Array<String>) {
   val inverseCaptcha = InverseCaptcha()
-  println("Sum: " + inverseCaptcha.solveCaptcha(getInputForDay(1)))
+  val day1Input = getInputForDay(1)
+  println("Part I:  " + inverseCaptcha.solveCaptchaPartOne(day1Input))
+  println("Part II: " + inverseCaptcha.solveCaptchaPartTwo(day1Input))
 }
 
-class InverseCaptcha {
-  fun solveCaptcha(input: String): Long {
-    val inputs = input.convertToListOfLongs()
-    val initial = if (inputs.firstAndLastAreEqual()) inputs.first() else 0L
-
+internal class InverseCaptcha {
+  private fun solveCaptcha(inputs: List<Long>, stepsBetween: Int): Long {
     return inputs
-      .zipWithNext()
+      .zipWith(stepsBetween)
       .filter { it.valuesAreEqual() }
       .map { it.first }
       .sum()
-      .plus(initial)
+  }
+
+  fun solveCaptchaPartOne(input: String): Long {
+    val inputs = input.convertToListOfLongs()
+    return solveCaptcha(inputs, 1)
   }
 
   fun solveCaptchaPartTwo(input: String): Long {
-    return 0
+    val inputs = input.convertToListOfLongs()
+    return solveCaptcha(inputs, inputs.size / 2)
+  }
+
+  private fun <T> List<T>.zipWith(stepsBetween: Int): List<Pair<T, T>> {
+    val subList = this.subList(0, stepsBetween)
+    val workingList = this.toMutableList()
+    workingList.addAll(subList)
+
+    val result = mutableListOf<Pair<T, T>>()
+    var i = 0
+    while (i < this.size) {
+      result.add(Pair(workingList[i], workingList[i + stepsBetween]))
+      i++
+    }
+
+    return result
   }
 
   private fun <T> List<T>.firstAndLastAreEqual() = this.first() == this.last()
