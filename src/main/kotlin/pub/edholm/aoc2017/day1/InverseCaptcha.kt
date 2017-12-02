@@ -4,14 +4,20 @@ import pub.edholm.aoc2017.utils.getInputForDay
 
 fun main(args: Array<String>) {
   val inverseCaptcha = InverseCaptcha()
-  val day1Input = getInputForDay(1)
+  val rawInput = getInputForDay(1)
+  val formattedInput = rawInput.formatToInts()
+
+  val solveCaptchaPartOne = inverseCaptcha.solveCaptchaPartOne(formattedInput)
+  val solveCaptchaPartTwo = inverseCaptcha.solveCaptchaPartTwo(formattedInput)
   println("Day 1:")
-  println("  Part I:  " + inverseCaptcha.solveCaptchaPartOne(day1Input))
-  println("  Part II: " + inverseCaptcha.solveCaptchaPartTwo(day1Input))
+  println("  Part I:  " + solveCaptchaPartOne)
+  println("  Part II: " + solveCaptchaPartTwo)
 }
 
+internal fun String.formatToInts() = this.map(Character::getNumericValue)
+
 internal class InverseCaptcha {
-  private fun solveCaptcha(inputs: List<Long>, stepsBetween: Int): Long {
+  private fun solveCaptcha(inputs: List<Int>, stepsBetween: Int): Int {
     return inputs
       .zipWith(stepsBetween)
       .filter { it.valuesAreEqual() }
@@ -19,32 +25,19 @@ internal class InverseCaptcha {
       .sum()
   }
 
-  fun solveCaptchaPartOne(input: String): Long {
-    val inputs = input.convertToListOfLongs()
-    return solveCaptcha(inputs, 1)
+  fun solveCaptchaPartOne(input: List<Int>): Int {
+    return solveCaptcha(input, 1)
   }
 
-  fun solveCaptchaPartTwo(input: String): Long {
-    val inputs = input.convertToListOfLongs()
-    return solveCaptcha(inputs, inputs.size / 2)
+  fun solveCaptchaPartTwo(input: List<Int>): Int {
+    return solveCaptcha(input, input.size / 2)
   }
 
   private fun <T> List<T>.zipWith(stepsBetween: Int): List<Pair<T, T>> {
-    val subList = this.subList(0, stepsBetween)
-    val workingList = this.toMutableList()
-    workingList.addAll(subList)
-
-    val result = mutableListOf<Pair<T, T>>()
-    var i = 0
-    while (i < this.size) {
-      result.add(Pair(workingList[i], workingList[i + stepsBetween]))
-      i++
-    }
-
-    return result
+    return List(this.size, { index ->
+      Pair(this[index % this.size], this[(index + stepsBetween) % this.size])
+    })
   }
 
-  private fun <T> List<T>.firstAndLastAreEqual() = this.first() == this.last()
   private fun <T> Pair<T, T>.valuesAreEqual() = this.first == this.second
-  private fun String.convertToListOfLongs() = this.trim().map { it.toString().toLong() }
 }

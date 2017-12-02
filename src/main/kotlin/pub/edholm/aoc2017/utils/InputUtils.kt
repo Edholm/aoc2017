@@ -9,6 +9,6 @@ fun getInputForDay(day: Int): String {
   val resource: URL = {}.javaClass.enclosingClass.getResource("/day$day")
     ?: throw IllegalArgumentException("Input for day $day not found")
 
-  return resource.readText()
+  return resource.readText().trim()
 }
 
