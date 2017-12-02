@@ -5,8 +5,9 @@ import pub.edholm.aoc2017.utils.getInputForDay
 fun main(args: Array<String>) {
   val inverseCaptcha = InverseCaptcha()
   val day1Input = getInputForDay(1)
-  println("Part I:  " + inverseCaptcha.solveCaptchaPartOne(day1Input))
-  println("Part II: " + inverseCaptcha.solveCaptchaPartTwo(day1Input))
+  println("Day 1:")
+  println("  Part I:  " + inverseCaptcha.solveCaptchaPartOne(day1Input))
+  println("  Part II: " + inverseCaptcha.solveCaptchaPartTwo(day1Input))
 }
 
 internal class InverseCaptcha {
