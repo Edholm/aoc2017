@@ -7,7 +7,8 @@ fun main(args: Array<String>) {
   val matrix = buildMatrix(inputForDay2)
   val checksum = Checksum()
   println("Day 2:")
-  println("  Part I:  ${checksum.calculate(matrix)}")
+  println("  Part I:  ${checksum.calculatePartOne(matrix)}")
+  println("  Part I:  ${checksum.calculatePartTwo(matrix)}")
 }
 
 private fun buildMatrix(input: String): List<List<Int>> {
@@ -21,9 +22,17 @@ private fun buildMatrix(input: String): List<List<Int>> {
 }
 
 internal class Checksum {
-  fun calculate(matrix: List<List<Int>>): Int {
-    return matrix.map { it.getMinAndMax() }
+  fun calculatePartOne(matrix: List<List<Int>>): Int {
+    return matrix
+      .map { it.getMinAndMax() }
       .map { it.diff() }
+      .sum()
+  }
+
+  fun calculatePartTwo(matrix: List<List<Int>>): Int {
+    return matrix
+      .map { it.findDivisible() }
+      .map { it.divide() }
       .sum()
   }
 
@@ -45,6 +54,21 @@ internal class Checksum {
     }
     return MinMax(min, max)
   }
+
+  private fun List<Int>.findDivisible(): Pair<Int, Int> {
+    this.forEachIndexed { index, value ->
+      this.subList(index + 1, this.size).forEach { nxtValue ->
+        if (value % nxtValue == 0) {
+          return Pair(value, nxtValue)
+        } else if (nxtValue % value == 0) {
+          return Pair(nxtValue, value)
+        }
+      }
+    }
+    throw IllegalStateException("No divisible numbers found in $this")
+  }
+
+  private fun Pair<Int, Int>.divide() = this.first / this.second
 }
 
 private data class MinMax(val min: Int, val max: Int)
