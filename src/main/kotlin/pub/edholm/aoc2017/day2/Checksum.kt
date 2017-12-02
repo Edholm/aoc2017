@@ -8,7 +8,7 @@ fun main(args: Array<String>) {
   val checksum = Checksum()
   println("Day 2:")
   println("  Part I:  ${checksum.calculatePartOne(matrix)}")
-  println("  Part I:  ${checksum.calculatePartTwo(matrix)}")
+  println("  Part II: ${checksum.calculatePartTwo(matrix)}")
 }
 
 private fun buildMatrix(input: String): List<List<Int>> {
